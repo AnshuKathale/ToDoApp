@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "972282727129",
+    "firebase_url": "https://notemakingapp-d9ff3.firebaseio.com",
+    "project_id": "notemakingapp-d9ff3",
+    "storage_bucket": "notemakingapp-d9ff3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972282727129:android:f3212a457f5a75987f0cc8",
+        "android_client_info": {
+          "package_name": "com.example.todoappanshu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972282727129-mk98m1jb33gklsbooei4eniaspolphh3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.todoappanshu",
+            "certificate_hash": "b278a4a220294210eae57e93faf58e1fcdf22cab"
+          }
+        },
+        {
+          "client_id": "972282727129-ep5cloj4l0346h59jp80du0ud3f18kks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Rn1NUp6IUHppJ9XvXuYMdqkHkyefxD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972282727129-ep5cloj4l0346h59jp80du0ud3f18kks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

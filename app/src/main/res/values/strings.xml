@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ToDoAppAnshu</string>
+    <string name="to_do_app">To do App</string>
+    <string name="enter_task">Enter task</string>
+    <string name="schedule">Schedule</string>
+    <string name="this_is_how_a_card_view_looks">This is how a card view looks</string>
+</resources>

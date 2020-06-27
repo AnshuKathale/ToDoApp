@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_do_app"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        android:padding="10dp"
+        android:background="@drawable/btn_bg"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:scrollbars="vertical"
+        android:divider="@color/colorAccent"
+        android:dividerHeight="3dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <EditText
+        android:id="@+id/edittext1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_task"
+        android:textSize="30sp"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_edit"
+        android:inputType="text" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="bottom|right"
+        android:focusable="true"
+        tools:ignore="RtlHardcoded" />
+</LinearLayout>
