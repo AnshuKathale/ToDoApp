@@ -20,10 +20,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @SuppressLint("Registered")
 public class NewActivity extends AppCompatActivity {
@@ -45,29 +48,29 @@ public class NewActivity extends AppCompatActivity {
         floatingActionButton2 = findViewById(R.id.fab2);
 
         Intent intent = getIntent();
-        String text=intent.getStringExtra(MainActivity.EXTRA_STRING); //Getting schedule entered in the RecyclerView
+        final String scheduleText=intent.getStringExtra(MainActivity.EXTRA_STRING); //Getting schedule entered in the RecyclerView
         TextView textView= findViewById(R.id.textview);
-        textView.setText(text);
+        textView.setText(scheduleText);
         arrayAdapter= new ArrayAdapter<>(getApplicationContext(), R.layout.customlist, arraylist2);
+
 
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String task = Schedule2.getText().toString();
                 if(TextUtils.isEmpty(task)){
-                    Toast.makeText(NewActivity.this,"",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewActivity.this,"Please enter task",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     arraylist2.add(task);
                     listview.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
-                    //trial1 new act
-                    HashMap<String,Object> map = new HashMap<>();
-                    map.put("Task",arraylist2.get(0));
-                    FirebaseDatabase.getInstance().getReference().child("Task").setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    //write
+                    FirebaseDatabase.getInstance().getReference().child(scheduleText).child("Task"+(arraylist2.size()-1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("TAG","onComplete success");
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -80,6 +83,38 @@ public class NewActivity extends AppCompatActivity {
             }
         });
 
+        //fab over
+
+        //read
+
+            DatabaseReference ref;
+            ref = FirebaseDatabase.getInstance().getReference(scheduleText);
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if(arraylist2.isEmpty()) {
+                        Log.i("Tag","if loop");
+
+                        for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+
+
+                            arraylist2.add(dataSnapshot.child("Task" + (arraylist2.size() - 1)).getValue().toString());
+                            listview.setAdapter(arrayAdapter);
+                            arrayAdapter.notifyDataSetChanged();
+
+                            Log.i("TAG", "" + snapshot);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
 
     }

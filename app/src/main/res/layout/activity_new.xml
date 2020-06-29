@@ -27,7 +27,7 @@
         android:id="@+id/edittext2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_task"
+        android:hint="@string/enter_task1"
         android:textSize="30sp"
         android:padding="10dp"
         android:layout_marginTop="20dp"

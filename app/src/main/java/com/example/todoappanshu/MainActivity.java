@@ -1,9 +1,5 @@
 package com.example.todoappanshu;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,10 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdaptor.OnNoteListener{
+    DatabaseReference ref;
     EditText Schedule1;
     FloatingActionButton floatingActionButton1;
     public String ScheduleName;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Schedule1 = findViewById(R.id.edittext1);
         floatingActionButton1 = findViewById(R.id.fab1);
         add();
@@ -61,11 +61,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 else{
                     arraylist1.add(0,ScheduleName);
                     adaptor.notifyItemInserted(0);
-                    //trial1
+                    //write
                     HashMap<String,Object> map = new HashMap<>();
-                    String currentTime = Calendar.getInstance().getTime().toString();
-                    map.put("Schedule",arraylist1.get(0));
-                    FirebaseDatabase.getInstance().getReference().child("").push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    map.put("Schedule",arraylist1.get(arraylist1.size()-1));
+                    FirebaseDatabase.getInstance().getReference().child(arraylist1.get(arraylist1.size()-1)).setValue("NA").addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("TAG","onComplete success");
@@ -76,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                             Log.i("TAG","onFailure happened because:"+e.toString());
                         }
                     });
+
+                    //Read
+
                 }
 
             }
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     }
+
     //Setting up the recyclerview
     public void mRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -97,4 +100,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         startActivity(intent);
 
     }
+
 }

@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">ToDoAppAnshu</string>
     <string name="to_do_app">To do App</string>
-    <string name="enter_task">Enter task</string>
+    <string name="enter_task">Enter schedule</string>
     <string name="schedule">Schedule</string>
     <string name="this_is_how_a_card_view_looks">This is how a card view looks</string>
+    <string name="user_registration">User Registration</string>
+    <string name="enter_email_id">Enter email id</string>
+    <string name="enter_password">Enter password</string>
+    <string name="register_user">Register user</string>
+    <string name="enter_task1">Enter task</string>
 </resources>
