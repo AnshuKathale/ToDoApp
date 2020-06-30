@@ -82,38 +82,30 @@ public class NewActivity extends AppCompatActivity {
                 }
             }
         });
-
         //fab over
 
         //read
-
             DatabaseReference ref;
             ref = FirebaseDatabase.getInstance().getReference(scheduleText);
+            if(arraylist2.isEmpty())
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists() && !snapshot.getValue().toString().equals("NA")) {
+                            for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
 
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    if(arraylist2.isEmpty()) {
-                        Log.i("Tag","if loop");
-
-                        for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-
-
-                            arraylist2.add(dataSnapshot.child("Task" + (arraylist2.size() - 1)).getValue().toString());
-                            listview.setAdapter(arrayAdapter);
-                            arrayAdapter.notifyDataSetChanged();
-
-                            Log.i("TAG", "" + snapshot);
+                                Log.i("Tag","for loop new act");
+                                String read =dataSnapshot.getValue().toString();
+                                arraylist2.add(read);
+                                listview.setAdapter(arrayAdapter);
+                                arrayAdapter.notifyDataSetChanged();
+                                Log.i("TAG", "" + read);
+                            }
                         }
                     }
 
-                }
-
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
+                public void onCancelled(@NonNull DatabaseError error) { }
             });
 
 

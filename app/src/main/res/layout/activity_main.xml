@@ -22,7 +22,8 @@
         android:layout_marginTop="20dp"
         android:scrollbars="vertical"
         android:divider="@color/colorAccent"
-        android:dividerHeight="3dp">
+        android:dividerHeight="3dp"
+        >
     </androidx.recyclerview.widget.RecyclerView>
 
     <EditText

@@ -26,12 +26,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewAdaptor.OnNoteListener{
+public class MainActivity extends AppCompatActivity {
     DatabaseReference ref;
     EditText Schedule1;
     FloatingActionButton floatingActionButton1;
     public String ScheduleName;
     public static final String EXTRA_STRING="HELLO";
+    public RecyclerViewAdaptor.OnNoteListener onNoteListener;
 
     private ArrayList<String> arraylist1 = new ArrayList<>();
     private RecyclerViewAdaptor adaptor;
@@ -42,7 +43,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setContentView(R.layout.activity_main);
         Schedule1 = findViewById(R.id.edittext1);
         floatingActionButton1 = findViewById(R.id.fab1);
+        //goes to new activity on clicked
+        onNoteListener = new RecyclerViewAdaptor.OnNoteListener() {
+            @Override
+            public void onNoteClick(int position) {
+
+                Intent intent = new Intent(getApplicationContext(), NewActivity.class);
+                intent.putExtra(EXTRA_STRING,arraylist1.get(position));
+                startActivity(intent);
+            }
+        };
         add();
+        if(arraylist1.isEmpty())
+            readSchedule();
         mRecyclerView();
     }
 
@@ -54,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             public void onClick(View v) {
 
                 ScheduleName = Schedule1.getText().toString();
-
                 if(TextUtils.isEmpty(ScheduleName)){
                     Toast.makeText(MainActivity.this, "Please enter Schedule", Toast.LENGTH_SHORT).show();
                 }
@@ -62,9 +74,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     arraylist1.add(0,ScheduleName);
                     adaptor.notifyItemInserted(0);
                     //write
-                    HashMap<String,Object> map = new HashMap<>();
-                    map.put("Schedule",arraylist1.get(arraylist1.size()-1));
-                    FirebaseDatabase.getInstance().getReference().child(arraylist1.get(arraylist1.size()-1)).setValue("NA").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference().child(arraylist1.get(arraylist1.size()-1)).setValue("NA")
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("TAG","onComplete success");
@@ -89,15 +100,37 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     //Setting up the recyclerview
     public void mRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adaptor = new RecyclerViewAdaptor(arraylist1,this);
+        adaptor = new RecyclerViewAdaptor(arraylist1, onNoteListener);
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-    //goes to new activity on clicked
-    public void onNoteClick(int position){
-        Intent intent = new Intent(this, NewActivity.class);
-        intent.putExtra(EXTRA_STRING,ScheduleName);
-        startActivity(intent);
+    public void readSchedule(){
+        DatabaseReference ref;
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()) {
+
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        Log.i("Tag","for loop main act");
+                        String read =dataSnapshot.getKey();
+                        arraylist1.add(0,read);
+                        adaptor.notifyItemInserted(0);
+                        Log.i("TAG", "" + read);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 

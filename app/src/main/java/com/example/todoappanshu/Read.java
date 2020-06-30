@@ -1,7 +1,7 @@
 package com.example.todoappanshu;
 
 public class Read {
-    private String task;
+    public String task;
 
     Read(){}
 
