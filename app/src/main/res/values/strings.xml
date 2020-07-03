@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoAppAnshu</string>
+    <string name="app_name">ToDoApp</string>
     <string name="to_do_app">To do App</string>
     <string name="enter_task">Enter schedule</string>
     <string name="schedule">Schedule</string>
