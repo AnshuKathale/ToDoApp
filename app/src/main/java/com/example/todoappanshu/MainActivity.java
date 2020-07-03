@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Schedule1 = findViewById(R.id.edittext1);
         floatingActionButton1 = findViewById(R.id.fab1);
+        mAuth = FirebaseAuth.getInstance();
         //goes to new activity on clicked
         onNoteListener = new RecyclerViewAdaptor.OnNoteListener() {
             @Override
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    //Read
 
                 }
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void readSchedule(){
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference();
+        ref = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

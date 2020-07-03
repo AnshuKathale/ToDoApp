@@ -47,6 +47,7 @@ public class NewActivity extends AppCompatActivity {
         listview = findViewById(R.id.listview);
         Schedule2 = findViewById(R.id.edittext2);
         floatingActionButton2 = findViewById(R.id.fab2);
+        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         final String scheduleText=intent.getStringExtra(MainActivity.EXTRA_STRING); //Getting schedule entered in the RecyclerView
@@ -87,7 +88,7 @@ public class NewActivity extends AppCompatActivity {
 
         //read
             DatabaseReference ref;
-            ref = FirebaseDatabase.getInstance().getReference(scheduleText);
+            ref = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()+"/"+scheduleText);
             if(arraylist2.isEmpty())
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
