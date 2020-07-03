@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class ScheduleActivity extends AppCompatActivity {
+
+    //variables
+
     DatabaseReference ref;
     EditText Schedule1;
     FloatingActionButton floatingActionButton1;
@@ -35,34 +39,37 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_STRING="HELLO";
     public RecyclerViewAdaptor.OnNoteListener onNoteListener;
     private FirebaseAuth mAuth;
-    private ArrayList<String> arraylist1 = new ArrayList<>();
+    private ArrayList<String> scheduleList = new ArrayList<>();
     private RecyclerViewAdaptor adaptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_schedule);
         Schedule1 = findViewById(R.id.edittext1);
         floatingActionButton1 = findViewById(R.id.fab1);
         mAuth = FirebaseAuth.getInstance();
-        //goes to new activity on clicked
+
+
+        //Goes to Task Activity
+
         onNoteListener = new RecyclerViewAdaptor.OnNoteListener() {
             @Override
             public void onNoteClick(int position) {
 
-                Intent intent = new Intent(getApplicationContext(), NewActivity.class);
-                intent.putExtra(EXTRA_STRING,arraylist1.get(position));
+                Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
+                intent.putExtra(EXTRA_STRING, scheduleList.get(position));
                 startActivity(intent);
             }
         };
         add();
-        if(arraylist1.isEmpty())
+        if(scheduleList.isEmpty())
             readSchedule();
         mRecyclerView();
     }
 
 
-    //to add text and insert cards in recyclerView
+    //To add text and insert cards in recyclerView
     public void add(){
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
                 ScheduleName = Schedule1.getText().toString();
                 if(TextUtils.isEmpty(ScheduleName)){
-                    Toast.makeText(MainActivity.this, "Please enter Schedule", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScheduleActivity.this, "Please enter Schedule", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    arraylist1.add(0,ScheduleName);
+                    scheduleList.add(0,ScheduleName);
                     adaptor.notifyItemInserted(0);
-                    //write
-                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(arraylist1.get(arraylist1.size()-1)).setValue("NA")
+
+                    //Write into database
+
+                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(scheduleList.get(scheduleList.size()-1)).setValue("NA")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -100,8 +109,16 @@ public class MainActivity extends AppCompatActivity {
 
     //Setting up the recyclerview
     public void mRecyclerView(){
+
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adaptor = new RecyclerViewAdaptor(arraylist1, onNoteListener);
+
+        //Recyclerview divider
+
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(decoration);
+
+        adaptor = new RecyclerViewAdaptor(scheduleList, onNoteListener);
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -118,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         Log.i("Tag","for loop main act");
                         String read =dataSnapshot.getKey();
-                        arraylist1.add(0,read);
+                        scheduleList.add(0,read);
                         adaptor.notifyItemInserted(0);
                         Log.i("TAG", "" + read);
                     }
@@ -129,10 +146,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                Toast.makeText(ScheduleActivity.this, "Data not saved", Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
+
+
 
 }

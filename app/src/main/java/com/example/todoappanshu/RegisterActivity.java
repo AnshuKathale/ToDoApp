@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FirstActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText email;
     private EditText pass;
@@ -29,10 +29,10 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first);
+        setContentView(R.layout.activity_register);
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser()!=null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
             startActivity(intent);
         }
         email = findViewById(R.id.emailid);
@@ -58,10 +58,10 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         String Pass = pass.getText().toString().trim();
 
         if(TextUtils.isEmpty(Email)){
-            Toast.makeText(FirstActivity.this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this,"Please enter email",Toast.LENGTH_LONG).show();
             return;}
         if(TextUtils.isEmpty(Pass)){
-            Toast.makeText(FirstActivity.this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this,"Please enter email",Toast.LENGTH_LONG).show();
             return;}
 
         firebaseAuth.createUserWithEmailAndPassword(Email,Pass)
@@ -70,11 +70,11 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         //pass intents here from this to MainActivity
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
                         startActivity(intent);
-                        Toast.makeText(FirstActivity.this, "User registered", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "User registered", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(FirstActivity.this, "Could not register user", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Could not register user", Toast.LENGTH_LONG).show();
                     }
                 }
         });

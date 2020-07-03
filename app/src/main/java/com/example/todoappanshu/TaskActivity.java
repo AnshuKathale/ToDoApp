@@ -30,19 +30,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 @SuppressLint("Registered")
-public class NewActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity {
+
+    //variables
+
     ListView listview;
     EditText Schedule2;
     FloatingActionButton floatingActionButton2;
     private FirebaseAuth mAuth;
-    private ArrayList<String> arraylist2 = new ArrayList<>();
+    private ArrayList<String> taskList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new);
+        setContentView(R.layout.activity_task);
 
         listview = findViewById(R.id.listview);
         Schedule2 = findViewById(R.id.edittext2);
@@ -50,10 +53,10 @@ public class NewActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        final String scheduleText=intent.getStringExtra(MainActivity.EXTRA_STRING); //Getting schedule entered in the RecyclerView
+        final String scheduleText=intent.getStringExtra(ScheduleActivity.EXTRA_STRING); //Getting schedule entered in the RecyclerView
         TextView textView= findViewById(R.id.textview);
         textView.setText(scheduleText);
-        arrayAdapter= new ArrayAdapter<>(getApplicationContext(), R.layout.customlist, arraylist2);
+        arrayAdapter= new ArrayAdapter<>(getApplicationContext(), R.layout.customlist, taskList);
 
 
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
@@ -61,14 +64,14 @@ public class NewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String task = Schedule2.getText().toString();
                 if(TextUtils.isEmpty(task)){
-                    Toast.makeText(NewActivity.this,"Please enter task",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TaskActivity.this,"Please enter task",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    arraylist2.add(task);
+                    taskList.add(task);
                     listview.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
                     //write
-                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(scheduleText).child("Task"+(arraylist2.size()-1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(scheduleText).child("Task"+(taskList.size()-1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("TAG","onComplete success");
@@ -89,7 +92,7 @@ public class NewActivity extends AppCompatActivity {
         //read
             DatabaseReference ref;
             ref = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()+"/"+scheduleText);
-            if(arraylist2.isEmpty())
+            if(taskList.isEmpty())
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,7 +101,7 @@ public class NewActivity extends AppCompatActivity {
 
                                 Log.i("Tag","for loop new act");
                                 String read =dataSnapshot.getValue().toString();
-                                arraylist2.add(read);
+                                taskList.add(read);
                                 listview.setAdapter(arrayAdapter);
                                 arrayAdapter.notifyDataSetChanged();
                                 Log.i("TAG", "" + read);
@@ -107,7 +110,10 @@ public class NewActivity extends AppCompatActivity {
                     }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) { }
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                    Toast.makeText(TaskActivity.this, "Data not saved", Toast.LENGTH_SHORT).show();
+                }
             });
 
 

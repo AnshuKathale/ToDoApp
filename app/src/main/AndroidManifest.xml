@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".NewActivity" />
-        <activity android:name=".FirstActivity">
+        <activity android:name=".ScheduleActivity" />
+        <activity android:name=".TaskActivity" />
+        <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
