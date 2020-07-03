@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +34,7 @@ public class NewActivity extends AppCompatActivity {
     ListView listview;
     EditText Schedule2;
     FloatingActionButton floatingActionButton2;
-
+    private FirebaseAuth mAuth;
     private ArrayList<String> arraylist2 = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
@@ -66,7 +67,7 @@ public class NewActivity extends AppCompatActivity {
                     listview.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
                     //write
-                    FirebaseDatabase.getInstance().getReference().child(scheduleText).child("Task"+(arraylist2.size()-1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(scheduleText).child("Task"+(arraylist2.size()-1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("TAG","onComplete success");

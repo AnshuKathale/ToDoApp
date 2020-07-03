@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public String ScheduleName;
     public static final String EXTRA_STRING="HELLO";
     public RecyclerViewAdaptor.OnNoteListener onNoteListener;
-
+    private FirebaseAuth mAuth;
     private ArrayList<String> arraylist1 = new ArrayList<>();
     private RecyclerViewAdaptor adaptor;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     arraylist1.add(0,ScheduleName);
                     adaptor.notifyItemInserted(0);
                     //write
-                    FirebaseDatabase.getInstance().getReference().child(arraylist1.get(arraylist1.size()-1)).setValue("NA")
+                    FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(arraylist1.get(arraylist1.size()-1)).setValue("NA")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

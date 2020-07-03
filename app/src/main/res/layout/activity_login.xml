@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/user_registration"
+        android:text="Login Screen"
         android:textSize="40sp"
         android:textAlignment="center"
         android:background="@drawable/btn_bg"/>
@@ -43,7 +43,7 @@
             android:inputType="textPassword"
             android:autofillHints="no" />
         <Button
-            android:id="@+id/registerbutton"
+            android:id="@+id/loginbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register_user"
@@ -52,10 +52,10 @@
             android:background="@drawable/btn_bg"/>
 
         <TextView
-            android:id="@+id/login_tv"
+            android:id="@+id/register_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already Registered ? Login here"
+            android:text="Not yet Registered? Click here"
             android:textColor="#000000"
             android:gravity="center"
             android:layout_marginTop="30dp"/>

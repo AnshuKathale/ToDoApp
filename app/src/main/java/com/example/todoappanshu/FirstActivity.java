@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     private EditText pass;
     private Button registerbtn;
     private FirebaseAuth firebaseAuth;
+    private TextView loginbtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,9 +38,10 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         email = findViewById(R.id.emailid);
         pass = findViewById(R.id.password);
         registerbtn = findViewById(R.id.registerbutton);
+        loginbtn = findViewById(R.id.login_tv);
 
         registerbtn.setOnClickListener(this);
-
+        loginbtn.setOnClickListener(this);
     }
 
 
@@ -46,7 +49,8 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v == registerbtn )
             registerUser();
-
+        else if (v == loginbtn)
+            loginUser();
     }
 
     private void registerUser() {
@@ -74,6 +78,11 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
         });
+    }
+    private void loginUser()
+    {
+        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(intent);
     }
 }
 
